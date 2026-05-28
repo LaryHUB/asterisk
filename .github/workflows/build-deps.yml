@@ -33,46 +33,67 @@ jobs:
       - name: Download .deb packages + Asterisk source
         env:
           DEBIAN_FRONTEND: noninteractive
+        shell: bash
         run: |
+          set -euo pipefail
+
           apt-get update -qq
-          mkdir -p pkgs
 
-          # download all deps with their transitive dependencies
-          apt-get install -y --download-only -o Dir::Cache::archives="$(pwd)/pkgs" \
-            build-essential wget curl pkg-config \
-            libssl-dev libncurses5-dev libedit-dev \
-            uuid-dev libxml2-dev libsqlite3-dev \
-            libjansson-dev libsrtp2-dev \
-            libnewt-dev libcurl4-openssl-dev \
-            liblua5.2-dev \
-            default-libmysqlclient-dev default-mysql-client \
-            libpopt-dev libical-dev \
-            libreadline-dev bison flex autoconf automake libtool \
-            2>/dev/null || true
+          # install wget/curl if missing (minimal images)
+          apt-get install -y wget ca-certificates
 
-          # try spandsp (not available on all versions)
-          apt-get install -y --download-only -o Dir::Cache::archives="$(pwd)/pkgs" \
-            libspandsp-dev 2>/dev/null || true
+          PKGDIR="$(pwd)/pkgs"
+          mkdir -p "$PKGDIR"
 
-          # download Asterisk source
-          wget -q https://downloads.asterisk.org/pub/telephony/asterisk/asterisk-20.19.0.tar.gz
+          PACKAGES="
+            build-essential pkg-config
+            libssl-dev libncurses5-dev libedit-dev
+            uuid-dev libxml2-dev libsqlite3-dev
+            libjansson-dev libsrtp2-dev
+            libnewt-dev libcurl4-openssl-dev
+            liblua5.2-dev
+            default-libmysqlclient-dev default-mysql-client
+            libpopt-dev libical-dev
+            libreadline-dev bison flex autoconf automake libtool
+          "
 
-          # copy project files
-          cp sql/schema.sql .
-          cp scripts/generate-configs.sh .
-          cp scripts/install-all.sh install.sh
-          cp sip.conf .
+          # resolve full dep list (including transitive)
+          DEP_LIST=$(apt-cache depends --recurse --no-recommends --no-suggests \
+            --no-conflicts --no-breaks --no-replaces --no-enhances \
+            $PACKAGES 2>/dev/null \
+            | grep '^\w' | sort -u)
 
-          # create archive
-          tar czf deps-${{ matrix.name }}.tar.gz \
-            pkgs/ \
-            asterisk-20.19.0.tar.gz \
-            schema.sql \
-            generate-configs.sh \
-            install.sh \
-            sip.conf
+          # download to pkgs/
+          cd "$PKGDIR"
+          apt-get download $DEP_LIST 2>/dev/null || true
 
-          echo "Archive size: $(du -sh deps-${{ matrix.name }}.tar.gz | cut -f1)"
+          # try spandsp separately (not on all versions)
+          SPANDSP=$(apt-cache depends --recurse --no-recommends --no-suggests \
+            --no-conflicts --no-breaks --no-replaces --no-enhances \
+            libspandsp-dev 2>/dev/null | grep '^\w' | sort -u) || true
+          [ -n "$SPANDSP" ] && apt-get download $SPANDSP 2>/dev/null || true
+
+          cd "$(dirname "$PKGDIR")"
+
+          echo "Downloaded $(ls pkgs/*.deb 2>/dev/null | wc -l) .deb files"
+
+          # Asterisk source
+          wget -q --show-progress \
+            https://downloads.asterisk.org/pub/telephony/asterisk/asterisk-20.19.0.tar.gz
+
+          # bundle everything into one archive
+          BUNDLE="$(pwd)/bundle"
+          mkdir -p "$BUNDLE"
+          cp -r pkgs/                          "$BUNDLE/"
+          cp    asterisk-20.19.0.tar.gz        "$BUNDLE/"
+          cp    sql/schema.sql                 "$BUNDLE/"
+          cp    scripts/generate-configs.sh    "$BUNDLE/"
+          cp    scripts/install-all.sh         "$BUNDLE/install.sh"
+          cp    sip.conf                       "$BUNDLE/"
+
+          tar czf deps-${{ matrix.name }}.tar.gz -C "$BUNDLE" .
+
+          echo "Archive: $(du -sh deps-${{ matrix.name }}.tar.gz | cut -f1)"
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
@@ -81,7 +102,7 @@ jobs:
           path: deps-${{ matrix.name }}.tar.gz
           retention-days: 7
 
-  # ── AlmaLinux / Rocky / CentOS ────────────────────────────────────────────
+  # ── AlmaLinux / Rocky ─────────────────────────────────────────────────────
   rpm:
     name: deps-${{ matrix.name }}
     runs-on: ubuntu-latest
@@ -103,12 +124,17 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Download .rpm packages + Asterisk source
+        shell: bash
         run: |
-          dnf install -y epel-release 2>/dev/null || true
-          dnf install -y 'dnf-command(download)' 2>/dev/null || true
-          mkdir -p pkgs
+          set -euo pipefail
 
-          dnf download --resolve --destdir=pkgs \
+          dnf install -y epel-release wget 2>/dev/null || true
+          dnf install -y 'dnf-command(download)' 2>/dev/null || true
+
+          PKGDIR="$(pwd)/pkgs"
+          mkdir -p "$PKGDIR"
+
+          dnf download --resolve --destdir="$PKGDIR" \
             gcc gcc-c++ make wget curl pkgconfig \
             openssl-devel ncurses-devel libedit-devel \
             libuuid-devel libxml2-devel sqlite-devel \
@@ -120,27 +146,27 @@ jobs:
             readline-devel bison flex autoconf automake libtool \
             2>/dev/null || true
 
-          # libsrtp and spandsp from epel
-          dnf download --resolve --destdir=pkgs \
+          # epel extras
+          dnf download --resolve --destdir="$PKGDIR" \
             libsrtp-devel spandsp-devel 2>/dev/null || true
 
-          # download Asterisk source
-          wget -q https://downloads.asterisk.org/pub/telephony/asterisk/asterisk-20.19.0.tar.gz
+          echo "Downloaded $(ls pkgs/*.rpm 2>/dev/null | wc -l) .rpm files"
 
-          cp sql/schema.sql .
-          cp scripts/generate-configs.sh .
-          cp scripts/install-all.sh install.sh
-          cp sip.conf .
+          wget -q --show-progress \
+            https://downloads.asterisk.org/pub/telephony/asterisk/asterisk-20.19.0.tar.gz
 
-          tar czf deps-${{ matrix.name }}.tar.gz \
-            pkgs/ \
-            asterisk-20.19.0.tar.gz \
-            schema.sql \
-            generate-configs.sh \
-            install.sh \
-            sip.conf
+          BUNDLE="$(pwd)/bundle"
+          mkdir -p "$BUNDLE"
+          cp -r pkgs/                          "$BUNDLE/"
+          cp    asterisk-20.19.0.tar.gz        "$BUNDLE/"
+          cp    sql/schema.sql                 "$BUNDLE/"
+          cp    scripts/generate-configs.sh    "$BUNDLE/"
+          cp    scripts/install-all.sh         "$BUNDLE/install.sh"
+          cp    sip.conf                       "$BUNDLE/"
 
-          echo "Archive size: $(du -sh deps-${{ matrix.name }}.tar.gz | cut -f1)"
+          tar czf deps-${{ matrix.name }}.tar.gz -C "$BUNDLE" .
+
+          echo "Archive: $(du -sh deps-${{ matrix.name }}.tar.gz | cut -f1)"
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
@@ -169,7 +195,7 @@ jobs:
       - name: Create Release
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: ${{ github.ref_name || 'latest' }}
+          tag_name: ${{ github.ref_name }}
           name: "Asterisk 20.19.0 — dependency archives"
           body: |
             ## Offline install archives
@@ -183,24 +209,8 @@ jobs:
             ### Usage on a clean server
 
             ```bash
-            # 1. copy the right archive for your OS to the server
-            scp deps-debian12.tar.gz root@your-server:/opt/
-
-            # 2. on the server
-            mkdir /opt/ast && tar xf /opt/deps-debian12.tar.gz -C /opt/ast
-            cd /opt/ast
-
-            # 3. install packages offline
-            dpkg -i pkgs/*.deb          # Debian/Ubuntu
-            # or
-            rpm -Uvh pkgs/*.rpm         # AlmaLinux/Rocky
-
-            # 4. build & install Asterisk
-            bash install.sh
-
-            # 5. set MySQL credentials
-            nano /etc/asterisk/asterisk-db.env
-            systemctl start asterisk
+            # автоопределение ОС и установка одной командой:
+            curl -fsSL https://raw.githubusercontent.com/LaryHUB/asterisk/main/scripts/download-deps.sh | bash
             ```
 
             | Archive | OS |
