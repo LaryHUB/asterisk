@@ -1,0 +1,20 @@
+CREATE DATABASE IF NOT EXISTS asterisk CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+USE asterisk;
+
+CREATE TABLE IF NOT EXISTS sip_clients (
+  id       INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  user     VARCHAR(20) NOT NULL UNIQUE,
+  password VARCHAR(50) NOT NULL,
+  prefix   VARCHAR(10) NOT NULL,
+  gateway  VARCHAR(20) NOT NULL,
+  active   TINYINT(1)  NOT NULL DEFAULT 1
+) ENGINE=InnoDB;
+
+CREATE TABLE IF NOT EXISTS sip_gateways (
+  id           INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  gateway      VARCHAR(20) NOT NULL UNIQUE,
+  gateway_pass VARCHAR(50) NOT NULL,
+  client       VARCHAR(20) NOT NULL,
+  active       TINYINT(1)  NOT NULL DEFAULT 1
+) ENGINE=InnoDB;

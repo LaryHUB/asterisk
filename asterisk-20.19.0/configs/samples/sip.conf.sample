@@ -1,0 +1,24 @@
+[general]
+bindport=5060
+bindaddr=0.0.0.0
+externaddr=91.227.41.41
+localnet=91.227.41.0/255.255.255.0
+allowguest=yes
+alwaysauthreject=no
+dtmfmode=rfc2833
+trustrpid=yes
+sendrpid=yes
+nat=force_rport,comedia
+canreinvite=no
+qualify=yes
+disallow=all
+allow=alaw
+allow=ulaw
+context=default
+jbenable=yes
+jbimpl=adaptive
+jbforce=yes
+jbmaxsize=200
+jbresyncthreshold=1000
+#include gws.conf
+#include clients.conf

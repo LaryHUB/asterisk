@@ -1,0 +1,1356 @@
+[general]
+static=yes
+writeprotect=no
+autofallthrough=yes
+
+[0001]
+exten => _X.,1,NoOp(Номер набран: ${EXTEN})
+same => n,Set(SIPADDR=${EXTEN:0:3})
+same => n,Set(TARGET=${EXTEN:3})
+same => n,NoOp(SIP адрес: ${SIPADDR}, целевой номер: ${TARGET})
+same => n,Dial(SIP/${EXTEN}@gw${SIPADDR})
+same => n,Hangup()
+
+[101]
+exten => _X.,1,NoOp(Call from SIP 101)
+exten => _X.,n,GotoIf($["${EXTEN:0:1}" = "7" & ${LEN(${EXTEN})}=11]?change:send)
+exten => _X.,n(change),Set(CALLED=8${EXTEN:1})
+exten => _X.,n,Dial(SIP/101${CALLED}@gw101)
+exten => _X.,n,Hangup()
+exten => _X.,n(send),Dial(SIP/101${EXTEN}@gw101)
+exten => _X.,n,Hangup()
+
+[gw101]
+exten => _X.,1,NoOp(Call in from SIP 101)
+exten => _X.,n,Dial(SIP/101)
+exten => _X.,n,Hangup()
+
+[102]
+exten => _X.,1,NoOp(Call from SIP 102)
+exten => _X.,n,GotoIf($["${EXTEN:0:1}" = "7" & ${LEN(${EXTEN})}=11]?change:send)
+exten => _X.,n(change),Set(CALLED=8${EXTEN:1})
+exten => _X.,n,Dial(SIP/102${CALLED}@gw102)
+exten => _X.,n,Hangup()
+exten => _X.,n(send),Dial(SIP/102${EXTEN}@gw102)
+exten => _X.,n,Hangup()
+
+[gw102]
+exten => _X.,1,NoOp(Call in from SIP 102)
+exten => _X.,n,Dial(SIP/102)
+exten => _X.,n,Hangup()
+
+[103]
+exten => _X.,1,NoOp(Call from SIP 103)
+exten => _X.,n,GotoIf($["${EXTEN:0:1}" = "7" & ${LEN(${EXTEN})}=11]?change:send)
+exten => _X.,n(change),Set(CALLED=8${EXTEN:1})
+exten => _X.,n,Dial(SIP/103${CALLED}@gw103)
+exten => _X.,n,Hangup()
+exten => _X.,n(send),Dial(SIP/103${EXTEN}@gw103)
+exten => _X.,n,Hangup()
+
+[gw103]
+exten => _X.,1,NoOp(Call in from SIP 103)
+exten => _X.,n,Dial(SIP/103)
+exten => _X.,n,Hangup()
+
+[104]
+exten => _X.,1,NoOp(Call from SIP 104)
+exten => _X.,n,GotoIf($["${EXTEN:0:1}" = "7" & ${LEN(${EXTEN})}=11]?change:send)
+exten => _X.,n(change),Set(CALLED=8${EXTEN:1})
+exten => _X.,n,Dial(SIP/104${CALLED}@gw104)
+exten => _X.,n,Hangup()
+exten => _X.,n(send),Dial(SIP/104${EXTEN}@gw104)
+exten => _X.,n,Hangup()
+
+[gw104]
+exten => _X.,1,NoOp(Call in from SIP 104)
+exten => _X.,n,Dial(SIP/104)
+exten => _X.,n,Hangup()
+
+[105]
+exten => _X.,1,NoOp(Call from SIP 105)
+exten => _X.,n,GotoIf($["${EXTEN:0:1}" = "7" & ${LEN(${EXTEN})}=11]?change:send)
+exten => _X.,n(change),Set(CALLED=8${EXTEN:1})
+exten => _X.,n,Dial(SIP/105${CALLED}@gw105)
+exten => _X.,n,Hangup()
+exten => _X.,n(send),Dial(SIP/105${EXTEN}@gw105)
+exten => _X.,n,Hangup()
+
+[gw105]
+exten => _X.,1,NoOp(Call in from SIP 105)
+exten => _X.,n,Dial(SIP/105)
+exten => _X.,n,Hangup()
+
+[106]
+exten => _X.,1,NoOp(Call from SIP 106)
+exten => _X.,n,GotoIf($["${EXTEN:0:1}" = "7" & ${LEN(${EXTEN})}=11]?change:send)
+exten => _X.,n(change),Set(CALLED=8${EXTEN:1})
+exten => _X.,n,Dial(SIP/106${CALLED}@gw106)
+exten => _X.,n,Hangup()
+exten => _X.,n(send),Dial(SIP/106${EXTEN}@gw106)
+exten => _X.,n,Hangup()
+
+[gw106]
+exten => _X.,1,NoOp(Call in from SIP 106)
+exten => _X.,n,Dial(SIP/106)
+exten => _X.,n,Hangup()
+
+[107]
+exten => _X.,1,NoOp(Call from SIP 107)
+exten => _X.,n,GotoIf($["${EXTEN:0:1}" = "7" & ${LEN(${EXTEN})}=11]?change:send)
+exten => _X.,n(change),Set(CALLED=8${EXTEN:1})
+exten => _X.,n,Dial(SIP/107${CALLED}@gw107)
+exten => _X.,n,Hangup()
+exten => _X.,n(send),Dial(SIP/107${EXTEN}@gw107)
+exten => _X.,n,Hangup()
+
+[gw107]
+exten => _X.,1,NoOp(Call in from SIP 107)
+exten => _X.,n,Dial(SIP/107)
+exten => _X.,n,Hangup()
+
+[108]
+exten => _X.,1,NoOp(Call from SIP 108)
+exten => _X.,n,GotoIf($["${EXTEN:0:1}" = "7" & ${LEN(${EXTEN})}=11]?change:send)
+exten => _X.,n(change),Set(CALLED=8${EXTEN:1})
+exten => _X.,n,Dial(SIP/108${CALLED}@gw108)
+exten => _X.,n,Hangup()
+exten => _X.,n(send),Dial(SIP/108${EXTEN}@gw108)
+exten => _X.,n,Hangup()
+
+[gw108]
+exten => _X.,1,NoOp(Call in from SIP 108)
+exten => _X.,n,Dial(SIP/108)
+exten => _X.,n,Hangup()
+
+[109]
+exten => _X.,1,NoOp(Call from SIP 109)
+exten => _X.,n,GotoIf($["${EXTEN:0:1}" = "7" & ${LEN(${EXTEN})}=11]?change:send)
+exten => _X.,n(change),Set(CALLED=8${EXTEN:1})
+exten => _X.,n,Dial(SIP/109${CALLED}@gw109)
+exten => _X.,n,Hangup()
+exten => _X.,n(send),Dial(SIP/109${EXTEN}@gw109)
+exten => _X.,n,Hangup()
+
+[gw109]
+exten => _X.,1,NoOp(Call in from SIP 109)
+exten => _X.,n,Dial(SIP/109)
+exten => _X.,n,Hangup()
+
+[110]
+exten => _X.,1,NoOp(Call from SIP 110)
+exten => _X.,n,GotoIf($["${EXTEN:0:1}" = "7" & ${LEN(${EXTEN})}=11]?change:send)
+exten => _X.,n(change),Set(CALLED=8${EXTEN:1})
+exten => _X.,n,Dial(SIP/110${CALLED}@gw110)
+exten => _X.,n,Hangup()
+exten => _X.,n(send),Dial(SIP/110${EXTEN}@gw110)
+exten => _X.,n,Hangup()
+
+[gw110]
+exten => _X.,1,NoOp(Call in from SIP 110)
+exten => _X.,n,Dial(SIP/110)
+exten => _X.,n,Hangup()
+
+[111]
+exten => _X.,1,NoOp(Call from SIP 111)
+exten => _X.,n,GotoIf($["${EXTEN:0:1}" = "7" & ${LEN(${EXTEN})}=11]?change:send)
+exten => _X.,n(change),Set(CALLED=8${EXTEN:1})
+exten => _X.,n,Dial(SIP/111${CALLED}@gw111)
+exten => _X.,n,Hangup()
+exten => _X.,n(send),Dial(SIP/111${EXTEN}@gw111)
+exten => _X.,n,Hangup()
+
+[gw111]
+exten => _X.,1,NoOp(Call in from SIP 111)
+exten => _X.,n,Dial(SIP/111)
+exten => _X.,n,Hangup()
+
+[112]
+exten => _X.,1,NoOp(Call from SIP 112)
+exten => _X.,n,GotoIf($["${EXTEN:0:1}" = "7" & ${LEN(${EXTEN})}=11]?change:send)
+exten => _X.,n(change),Set(CALLED=8${EXTEN:1})
+exten => _X.,n,Dial(SIP/112${CALLED}@gw112)
+exten => _X.,n,Hangup()
+exten => _X.,n(send),Dial(SIP/112${EXTEN}@gw112)
+exten => _X.,n,Hangup()
+
+[gw112]
+exten => _X.,1,NoOp(Call in from SIP 112)
+exten => _X.,n,Dial(SIP/112)
+exten => _X.,n,Hangup()
+
+[113]
+exten => _X.,1,NoOp(Call from SIP 113)
+exten => _X.,n,GotoIf($["${EXTEN:0:1}" = "7" & ${LEN(${EXTEN})}=11]?change:send)
+exten => _X.,n(change),Set(CALLED=8${EXTEN:1})
+exten => _X.,n,Dial(SIP/113${CALLED}@gw113)
+exten => _X.,n,Hangup()
+exten => _X.,n(send),Dial(SIP/113${EXTEN}@gw113)
+exten => _X.,n,Hangup()
+
+[gw113]
+exten => _X.,1,NoOp(Call in from SIP 113)
+exten => _X.,n,Dial(SIP/113)
+exten => _X.,n,Hangup()
+
+[114]
+exten => _X.,1,NoOp(Call from SIP 114)
+exten => _X.,n,GotoIf($["${EXTEN:0:1}" = "7" & ${LEN(${EXTEN})}=11]?change:send)
+exten => _X.,n(change),Set(CALLED=8${EXTEN:1})
+exten => _X.,n,Dial(SIP/114${CALLED}@gw114)
+exten => _X.,n,Hangup()
+exten => _X.,n(send),Dial(SIP/114${EXTEN}@gw114)
+exten => _X.,n,Hangup()
+
+[gw114]
+exten => _X.,1,NoOp(Call in from SIP 114)
+exten => _X.,n,Dial(SIP/114)
+exten => _X.,n,Hangup()
+
+[115]
+exten => _X.,1,NoOp(Call from SIP 115)
+exten => _X.,n,GotoIf($["${EXTEN:0:1}" = "7" & ${LEN(${EXTEN})}=11]?change:send)
+exten => _X.,n(change),Set(CALLED=8${EXTEN:1})
+exten => _X.,n,Dial(SIP/115${CALLED}@gw115)
+exten => _X.,n,Hangup()
+exten => _X.,n(send),Dial(SIP/115${EXTEN}@gw115)
+exten => _X.,n,Hangup()
+
+[gw115]
+exten => _X.,1,NoOp(Call in from SIP 115)
+exten => _X.,n,Dial(SIP/115)
+exten => _X.,n,Hangup()
+
+[116]
+exten => _X.,1,NoOp(Call from SIP 116)
+exten => _X.,n,GotoIf($["${EXTEN:0:1}" = "7" & ${LEN(${EXTEN})}=11]?change:send)
+exten => _X.,n(change),Set(CALLED=8${EXTEN:1})
+exten => _X.,n,Dial(SIP/116${CALLED}@gw116)
+exten => _X.,n,Hangup()
+exten => _X.,n(send),Dial(SIP/116${EXTEN}@gw116)
+exten => _X.,n,Hangup()
+
+[gw116]
+exten => _X.,1,NoOp(Call in from SIP 116)
+exten => _X.,n,Dial(SIP/116)
+exten => _X.,n,Hangup()
+
+[117]
+exten => _X.,1,NoOp(Call from SIP 117)
+exten => _X.,n,GotoIf($["${EXTEN:0:1}" = "7" & ${LEN(${EXTEN})}=11]?change:send)
+exten => _X.,n(change),Set(CALLED=8${EXTEN:1})
+exten => _X.,n,Dial(SIP/117${CALLED}@gw117)
+exten => _X.,n,Hangup()
+exten => _X.,n(send),Dial(SIP/117${EXTEN}@gw117)
+exten => _X.,n,Hangup()
+
+[gw117]
+exten => _X.,1,NoOp(Call in from SIP 117)
+exten => _X.,n,Dial(SIP/117)
+exten => _X.,n,Hangup()
+
+[118]
+exten => _X.,1,NoOp(Call from SIP 118)
+exten => _X.,n,GotoIf($["${EXTEN:0:1}" = "7" & ${LEN(${EXTEN})}=11]?change:send)
+exten => _X.,n(change),Set(CALLED=8${EXTEN:1})
+exten => _X.,n,Dial(SIP/118${CALLED}@gw118)
+exten => _X.,n,Hangup()
+exten => _X.,n(send),Dial(SIP/118${EXTEN}@gw118)
+exten => _X.,n,Hangup()
+
+[gw118]
+exten => _X.,1,NoOp(Call in from SIP 118)
+exten => _X.,n,Dial(SIP/118)
+exten => _X.,n,Hangup()
+
+[119]
+exten => _X.,1,NoOp(Call from SIP 119)
+exten => _X.,n,GotoIf($["${EXTEN:0:1}" = "7" & ${LEN(${EXTEN})}=11]?change:send)
+exten => _X.,n(change),Set(CALLED=8${EXTEN:1})
+exten => _X.,n,Dial(SIP/119${CALLED}@gw119)
+exten => _X.,n,Hangup()
+exten => _X.,n(send),Dial(SIP/119${EXTEN}@gw119)
+exten => _X.,n,Hangup()
+
+[gw119]
+exten => _X.,1,NoOp(Call in from SIP 119)
+exten => _X.,n,Dial(SIP/119)
+exten => _X.,n,Hangup()
+
+[120]
+exten => _X.,1,NoOp(Call from SIP 120)
+exten => _X.,n,GotoIf($["${EXTEN:0:1}" = "7" & ${LEN(${EXTEN})}=11]?change:send)
+exten => _X.,n(change),Set(CALLED=8${EXTEN:1})
+exten => _X.,n,Dial(SIP/120${CALLED}@gw120)
+exten => _X.,n,Hangup()
+exten => _X.,n(send),Dial(SIP/120${EXTEN}@gw120)
+exten => _X.,n,Hangup()
+
+[gw120]
+exten => _X.,1,NoOp(Call in from SIP 120)
+exten => _X.,n,Dial(SIP/120)
+exten => _X.,n,Hangup()
+
+[121]
+exten => _X.,1,NoOp(Call from SIP 121)
+exten => _X.,n,GotoIf($["${EXTEN:0:1}" = "7" & ${LEN(${EXTEN})}=11]?change:send)
+exten => _X.,n(change),Set(CALLED=8${EXTEN:1})
+exten => _X.,n,Dial(SIP/121${CALLED}@gw121)
+exten => _X.,n,Hangup()
+exten => _X.,n(send),Dial(SIP/121${EXTEN}@gw121)
+exten => _X.,n,Hangup()
+
+[gw121]
+exten => _X.,1,NoOp(Call in from SIP 121)
+exten => _X.,n,Dial(SIP/121)
+exten => _X.,n,Hangup()
+
+[122]
+exten => _X.,1,NoOp(Call from SIP 122)
+exten => _X.,n,GotoIf($["${EXTEN:0:1}" = "7" & ${LEN(${EXTEN})}=11]?change:send)
+exten => _X.,n(change),Set(CALLED=8${EXTEN:1})
+exten => _X.,n,Dial(SIP/122${CALLED}@gw122)
+exten => _X.,n,Hangup()
+exten => _X.,n(send),Dial(SIP/122${EXTEN}@gw122)
+exten => _X.,n,Hangup()
+
+[gw122]
+exten => _X.,1,NoOp(Call in from SIP 122)
+exten => _X.,n,Dial(SIP/122)
+exten => _X.,n,Hangup()
+
+[123]
+exten => _X.,1,NoOp(Call from SIP 123)
+exten => _X.,n,GotoIf($["${EXTEN:0:1}" = "7" & ${LEN(${EXTEN})}=11]?change:send)
+exten => _X.,n(change),Set(CALLED=8${EXTEN:1})
+exten => _X.,n,Dial(SIP/123${CALLED}@gw123)
+exten => _X.,n,Hangup()
+exten => _X.,n(send),Dial(SIP/123${EXTEN}@gw123)
+exten => _X.,n,Hangup()
+
+[gw123]
+exten => _X.,1,NoOp(Call in from SIP 123)
+exten => _X.,n,Dial(SIP/123)
+exten => _X.,n,Hangup()
+
+[124]
+exten => _X.,1,NoOp(Call from SIP 124)
+exten => _X.,n,GotoIf($["${EXTEN:0:1}" = "7" & ${LEN(${EXTEN})}=11]?change:send)
+exten => _X.,n(change),Set(CALLED=8${EXTEN:1})
+exten => _X.,n,Dial(SIP/124${CALLED}@gw124)
+exten => _X.,n,Hangup()
+exten => _X.,n(send),Dial(SIP/124${EXTEN}@gw124)
+exten => _X.,n,Hangup()
+
+[gw124]
+exten => _X.,1,NoOp(Call in from SIP 124)
+exten => _X.,n,Dial(SIP/124)
+exten => _X.,n,Hangup()
+
+[125]
+exten => _X.,1,NoOp(Call from SIP 125)
+exten => _X.,n,GotoIf($["${EXTEN:0:1}" = "7" & ${LEN(${EXTEN})}=11]?change:send)
+exten => _X.,n(change),Set(CALLED=8${EXTEN:1})
+exten => _X.,n,Dial(SIP/125${CALLED}@gw125)
+exten => _X.,n,Hangup()
+exten => _X.,n(send),Dial(SIP/125${EXTEN}@gw125)
+exten => _X.,n,Hangup()
+
+[gw125]
+exten => _X.,1,NoOp(Call in from SIP 125)
+exten => _X.,n,Dial(SIP/125)
+exten => _X.,n,Hangup()
+
+[126]
+exten => _X.,1,NoOp(Call from SIP 126)
+exten => _X.,n,GotoIf($["${EXTEN:0:1}" = "7" & ${LEN(${EXTEN})}=11]?change:send)
+exten => _X.,n(change),Set(CALLED=8${EXTEN:1})
+exten => _X.,n,Dial(SIP/126${CALLED}@gw126)
+exten => _X.,n,Hangup()
+exten => _X.,n(send),Dial(SIP/126${EXTEN}@gw126)
+exten => _X.,n,Hangup()
+
+[gw126]
+exten => _X.,1,NoOp(Call in from SIP 126)
+exten => _X.,n,Dial(SIP/126)
+exten => _X.,n,Hangup()
+
+[127]
+exten => _X.,1,NoOp(Call from SIP 127)
+exten => _X.,n,GotoIf($["${EXTEN:0:1}" = "7" & ${LEN(${EXTEN})}=11]?change:send)
+exten => _X.,n(change),Set(CALLED=8${EXTEN:1})
+exten => _X.,n,Dial(SIP/127${CALLED}@gw127)
+exten => _X.,n,Hangup()
+exten => _X.,n(send),Dial(SIP/127${EXTEN}@gw127)
+exten => _X.,n,Hangup()
+
+[gw127]
+exten => _X.,1,NoOp(Call in from SIP 127)
+exten => _X.,n,Dial(SIP/127)
+exten => _X.,n,Hangup()
+
+[128]
+exten => _X.,1,NoOp(Call from SIP 128)
+exten => _X.,n,GotoIf($["${EXTEN:0:1}" = "7" & ${LEN(${EXTEN})}=11]?change:send)
+exten => _X.,n(change),Set(CALLED=8${EXTEN:1})
+exten => _X.,n,Dial(SIP/128${CALLED}@gw128)
+exten => _X.,n,Hangup()
+exten => _X.,n(send),Dial(SIP/128${EXTEN}@gw128)
+exten => _X.,n,Hangup()
+
+[gw128]
+exten => _X.,1,NoOp(Call in from SIP 128)
+exten => _X.,n,Dial(SIP/128)
+exten => _X.,n,Hangup()
+
+[129]
+exten => _X.,1,NoOp(Call from SIP 129)
+exten => _X.,n,GotoIf($["${EXTEN:0:1}" = "7" & ${LEN(${EXTEN})}=11]?change:send)
+exten => _X.,n(change),Set(CALLED=8${EXTEN:1})
+exten => _X.,n,Dial(SIP/129${CALLED}@gw129)
+exten => _X.,n,Hangup()
+exten => _X.,n(send),Dial(SIP/129${EXTEN}@gw129)
+exten => _X.,n,Hangup()
+
+[gw129]
+exten => _X.,1,NoOp(Call in from SIP 129)
+exten => _X.,n,Dial(SIP/129)
+exten => _X.,n,Hangup()
+
+[130]
+exten => _X.,1,NoOp(Call from SIP 130)
+exten => _X.,n,GotoIf($["${EXTEN:0:1}" = "7" & ${LEN(${EXTEN})}=11]?change:send)
+exten => _X.,n(change),Set(CALLED=8${EXTEN:1})
+exten => _X.,n,Dial(SIP/130${CALLED}@gw130)
+exten => _X.,n,Hangup()
+exten => _X.,n(send),Dial(SIP/130${EXTEN}@gw130)
+exten => _X.,n,Hangup()
+
+[gw130]
+exten => _X.,1,NoOp(Call in from SIP 130)
+exten => _X.,n,Dial(SIP/130)
+exten => _X.,n,Hangup()
+
+[131]
+exten => _X.,1,NoOp(Call from SIP 131)
+exten => _X.,n,GotoIf($["${EXTEN:0:1}" = "7" & ${LEN(${EXTEN})}=11]?change:send)
+exten => _X.,n(change),Set(CALLED=8${EXTEN:1})
+exten => _X.,n,Dial(SIP/131${CALLED}@gw131)
+exten => _X.,n,Hangup()
+exten => _X.,n(send),Dial(SIP/131${EXTEN}@gw131)
+exten => _X.,n,Hangup()
+
+[gw131]
+exten => _X.,1,NoOp(Call in from SIP 131)
+exten => _X.,n,Dial(SIP/131)
+exten => _X.,n,Hangup()
+
+[132]
+exten => _X.,1,NoOp(Call from SIP 132)
+exten => _X.,n,GotoIf($["${EXTEN:0:1}" = "7" & ${LEN(${EXTEN})}=11]?change:send)
+exten => _X.,n(change),Set(CALLED=8${EXTEN:1})
+exten => _X.,n,Dial(SIP/132${CALLED}@gw132)
+exten => _X.,n,Hangup()
+exten => _X.,n(send),Dial(SIP/132${EXTEN}@gw132)
+exten => _X.,n,Hangup()
+
+[gw132]
+exten => _X.,1,NoOp(Call in from SIP 132)
+exten => _X.,n,Dial(SIP/132)
+exten => _X.,n,Hangup()
+
+[201]
+exten => _X.,1,NoOp(Call from SIP 201)
+exten => _X.,n,GotoIf($["${EXTEN:0:1}" = "7" & ${LEN(${EXTEN})}=11]?change:send)
+exten => _X.,n(change),Set(CALLED=8${EXTEN:1})
+exten => _X.,n,Dial(SIP/201${CALLED}@gw201)
+exten => _X.,n,Hangup()
+exten => _X.,n(send),Dial(SIP/201${EXTEN}@gw201)
+exten => _X.,n,Hangup()
+
+[gw201]
+exten => _X.,1,NoOp(Call in from SIP 201)
+exten => _X.,n,Dial(SIP/201)
+exten => _X.,n,Hangup()
+
+[202]
+exten => _X.,1,NoOp(Call from SIP 202)
+exten => _X.,n,GotoIf($["${EXTEN:0:1}" = "7" & ${LEN(${EXTEN})}=11]?change:send)
+exten => _X.,n(change),Set(CALLED=8${EXTEN:1})
+exten => _X.,n,Dial(SIP/202${CALLED}@gw202)
+exten => _X.,n,Hangup()
+exten => _X.,n(send),Dial(SIP/202${EXTEN}@gw202)
+exten => _X.,n,Hangup()
+
+[gw202]
+exten => _X.,1,NoOp(Call in from SIP 202)
+exten => _X.,n,Dial(SIP/202)
+exten => _X.,n,Hangup()
+
+[203]
+exten => _X.,1,NoOp(Call from SIP 203)
+exten => _X.,n,GotoIf($["${EXTEN:0:1}" = "7" & ${LEN(${EXTEN})}=11]?change:send)
+exten => _X.,n(change),Set(CALLED=8${EXTEN:1})
+exten => _X.,n,Dial(SIP/203${CALLED}@gw203)
+exten => _X.,n,Hangup()
+exten => _X.,n(send),Dial(SIP/203${EXTEN}@gw203)
+exten => _X.,n,Hangup()
+
+[gw203]
+exten => _X.,1,NoOp(Call in from SIP 203)
+exten => _X.,n,Dial(SIP/203)
+exten => _X.,n,Hangup()
+
+[204]
+exten => _X.,1,NoOp(Call from SIP 204)
+exten => _X.,n,GotoIf($["${EXTEN:0:1}" = "7" & ${LEN(${EXTEN})}=11]?change:send)
+exten => _X.,n(change),Set(CALLED=8${EXTEN:1})
+exten => _X.,n,Dial(SIP/204${CALLED}@gw204)
+exten => _X.,n,Hangup()
+exten => _X.,n(send),Dial(SIP/204${EXTEN}@gw204)
+exten => _X.,n,Hangup()
+
+[gw204]
+exten => _X.,1,NoOp(Call in from SIP 204)
+exten => _X.,n,Dial(SIP/204)
+exten => _X.,n,Hangup()
+
+[205]
+exten => _X.,1,NoOp(Call from SIP 205)
+exten => _X.,n,GotoIf($["${EXTEN:0:1}" = "7" & ${LEN(${EXTEN})}=11]?change:send)
+exten => _X.,n(change),Set(CALLED=8${EXTEN:1})
+exten => _X.,n,Dial(SIP/205${CALLED}@gw205)
+exten => _X.,n,Hangup()
+exten => _X.,n(send),Dial(SIP/205${EXTEN}@gw205)
+exten => _X.,n,Hangup()
+
+[gw205]
+exten => _X.,1,NoOp(Call in from SIP 205)
+exten => _X.,n,Dial(SIP/205)
+exten => _X.,n,Hangup()
+
+[206]
+exten => _X.,1,NoOp(Call from SIP 206)
+exten => _X.,n,GotoIf($["${EXTEN:0:1}" = "7" & ${LEN(${EXTEN})}=11]?change:send)
+exten => _X.,n(change),Set(CALLED=8${EXTEN:1})
+exten => _X.,n,Dial(SIP/206${CALLED}@gw206)
+exten => _X.,n,Hangup()
+exten => _X.,n(send),Dial(SIP/206${EXTEN}@gw206)
+exten => _X.,n,Hangup()
+
+[gw206]
+exten => _X.,1,NoOp(Call in from SIP 206)
+exten => _X.,n,Dial(SIP/206)
+exten => _X.,n,Hangup()
+
+[207]
+exten => _X.,1,NoOp(Call from SIP 207)
+exten => _X.,n,GotoIf($["${EXTEN:0:1}" = "7" & ${LEN(${EXTEN})}=11]?change:send)
+exten => _X.,n(change),Set(CALLED=8${EXTEN:1})
+exten => _X.,n,Dial(SIP/207${CALLED}@gw207)
+exten => _X.,n,Hangup()
+exten => _X.,n(send),Dial(SIP/207${EXTEN}@gw207)
+exten => _X.,n,Hangup()
+
+[gw207]
+exten => _X.,1,NoOp(Call in from SIP 207)
+exten => _X.,n,Dial(SIP/207)
+exten => _X.,n,Hangup()
+
+[208]
+exten => _X.,1,NoOp(Call from SIP 208)
+exten => _X.,n,GotoIf($["${EXTEN:0:1}" = "7" & ${LEN(${EXTEN})}=11]?change:send)
+exten => _X.,n(change),Set(CALLED=8${EXTEN:1})
+exten => _X.,n,Dial(SIP/208${CALLED}@gw208)
+exten => _X.,n,Hangup()
+exten => _X.,n(send),Dial(SIP/208${EXTEN}@gw208)
+exten => _X.,n,Hangup()
+
+[gw208]
+exten => _X.,1,NoOp(Call in from SIP 208)
+exten => _X.,n,Dial(SIP/208)
+exten => _X.,n,Hangup()
+
+[209]
+exten => _X.,1,NoOp(Call from SIP 209)
+exten => _X.,n,GotoIf($["${EXTEN:0:1}" = "7" & ${LEN(${EXTEN})}=11]?change:send)
+exten => _X.,n(change),Set(CALLED=8${EXTEN:1})
+exten => _X.,n,Dial(SIP/209${CALLED}@gw209)
+exten => _X.,n,Hangup()
+exten => _X.,n(send),Dial(SIP/209${EXTEN}@gw209)
+exten => _X.,n,Hangup()
+
+[gw209]
+exten => _X.,1,NoOp(Call in from SIP 209)
+exten => _X.,n,Dial(SIP/209)
+exten => _X.,n,Hangup()
+
+[210]
+exten => _X.,1,NoOp(Call from SIP 210)
+exten => _X.,n,GotoIf($["${EXTEN:0:1}" = "7" & ${LEN(${EXTEN})}=11]?change:send)
+exten => _X.,n(change),Set(CALLED=8${EXTEN:1})
+exten => _X.,n,Dial(SIP/210${CALLED}@gw210)
+exten => _X.,n,Hangup()
+exten => _X.,n(send),Dial(SIP/210${EXTEN}@gw210)
+exten => _X.,n,Hangup()
+
+[gw210]
+exten => _X.,1,NoOp(Call in from SIP 210)
+exten => _X.,n,Dial(SIP/210)
+exten => _X.,n,Hangup()
+
+[211]
+exten => _X.,1,NoOp(Call from SIP 211)
+exten => _X.,n,GotoIf($["${EXTEN:0:1}" = "7" & ${LEN(${EXTEN})}=11]?change:send)
+exten => _X.,n(change),Set(CALLED=8${EXTEN:1})
+exten => _X.,n,Dial(SIP/211${CALLED}@gw211)
+exten => _X.,n,Hangup()
+exten => _X.,n(send),Dial(SIP/211${EXTEN}@gw211)
+exten => _X.,n,Hangup()
+
+[gw211]
+exten => _X.,1,NoOp(Call in from SIP 211)
+exten => _X.,n,Dial(SIP/211)
+exten => _X.,n,Hangup()
+
+[212]
+exten => _X.,1,NoOp(Call from SIP 212)
+exten => _X.,n,GotoIf($["${EXTEN:0:1}" = "7" & ${LEN(${EXTEN})}=11]?change:send)
+exten => _X.,n(change),Set(CALLED=8${EXTEN:1})
+exten => _X.,n,Dial(SIP/212${CALLED}@gw212)
+exten => _X.,n,Hangup()
+exten => _X.,n(send),Dial(SIP/212${EXTEN}@gw212)
+exten => _X.,n,Hangup()
+
+[gw212]
+exten => _X.,1,NoOp(Call in from SIP 212)
+exten => _X.,n,Dial(SIP/212)
+exten => _X.,n,Hangup()
+
+[213]
+exten => _X.,1,NoOp(Call from SIP 213)
+exten => _X.,n,GotoIf($["${EXTEN:0:1}" = "7" & ${LEN(${EXTEN})}=11]?change:send)
+exten => _X.,n(change),Set(CALLED=8${EXTEN:1})
+exten => _X.,n,Dial(SIP/213${CALLED}@gw213)
+exten => _X.,n,Hangup()
+exten => _X.,n(send),Dial(SIP/213${EXTEN}@gw213)
+exten => _X.,n,Hangup()
+
+[gw213]
+exten => _X.,1,NoOp(Call in from SIP 213)
+exten => _X.,n,Dial(SIP/213)
+exten => _X.,n,Hangup()
+
+[214]
+exten => _X.,1,NoOp(Call from SIP 214)
+exten => _X.,n,GotoIf($["${EXTEN:0:1}" = "7" & ${LEN(${EXTEN})}=11]?change:send)
+exten => _X.,n(change),Set(CALLED=8${EXTEN:1})
+exten => _X.,n,Dial(SIP/214${CALLED}@gw214)
+exten => _X.,n,Hangup()
+exten => _X.,n(send),Dial(SIP/214${EXTEN}@gw214)
+exten => _X.,n,Hangup()
+
+[gw214]
+exten => _X.,1,NoOp(Call in from SIP 214)
+exten => _X.,n,Dial(SIP/214)
+exten => _X.,n,Hangup()
+
+[215]
+exten => _X.,1,NoOp(Call from SIP 215)
+exten => _X.,n,GotoIf($["${EXTEN:0:1}" = "7" & ${LEN(${EXTEN})}=11]?change:send)
+exten => _X.,n(change),Set(CALLED=8${EXTEN:1})
+exten => _X.,n,Dial(SIP/215${CALLED}@gw215)
+exten => _X.,n,Hangup()
+exten => _X.,n(send),Dial(SIP/215${EXTEN}@gw215)
+exten => _X.,n,Hangup()
+
+[gw215]
+exten => _X.,1,NoOp(Call in from SIP 215)
+exten => _X.,n,Dial(SIP/215)
+exten => _X.,n,Hangup()
+
+[216]
+exten => _X.,1,NoOp(Call from SIP 216)
+exten => _X.,n,GotoIf($["${EXTEN:0:1}" = "7" & ${LEN(${EXTEN})}=11]?change:send)
+exten => _X.,n(change),Set(CALLED=8${EXTEN:1})
+exten => _X.,n,Dial(SIP/216${CALLED}@gw216)
+exten => _X.,n,Hangup()
+exten => _X.,n(send),Dial(SIP/216${EXTEN}@gw216)
+exten => _X.,n,Hangup()
+
+[gw216]
+exten => _X.,1,NoOp(Call in from SIP 216)
+exten => _X.,n,Dial(SIP/216)
+exten => _X.,n,Hangup()
+
+[217]
+exten => _X.,1,NoOp(Call from SIP 217)
+exten => _X.,n,GotoIf($["${EXTEN:0:1}" = "7" & ${LEN(${EXTEN})}=11]?change:send)
+exten => _X.,n(change),Set(CALLED=8${EXTEN:1})
+exten => _X.,n,Dial(SIP/217${CALLED}@gw217)
+exten => _X.,n,Hangup()
+exten => _X.,n(send),Dial(SIP/217${EXTEN}@gw217)
+exten => _X.,n,Hangup()
+
+[gw217]
+exten => _X.,1,NoOp(Call in from SIP 217)
+exten => _X.,n,Dial(SIP/217)
+exten => _X.,n,Hangup()
+
+[218]
+exten => _X.,1,NoOp(Call from SIP 218)
+exten => _X.,n,GotoIf($["${EXTEN:0:1}" = "7" & ${LEN(${EXTEN})}=11]?change:send)
+exten => _X.,n(change),Set(CALLED=8${EXTEN:1})
+exten => _X.,n,Dial(SIP/218${CALLED}@gw218)
+exten => _X.,n,Hangup()
+exten => _X.,n(send),Dial(SIP/218${EXTEN}@gw218)
+exten => _X.,n,Hangup()
+
+[gw218]
+exten => _X.,1,NoOp(Call in from SIP 218)
+exten => _X.,n,Dial(SIP/218)
+exten => _X.,n,Hangup()
+
+[219]
+exten => _X.,1,NoOp(Call from SIP 219)
+exten => _X.,n,GotoIf($["${EXTEN:0:1}" = "7" & ${LEN(${EXTEN})}=11]?change:send)
+exten => _X.,n(change),Set(CALLED=8${EXTEN:1})
+exten => _X.,n,Dial(SIP/219${CALLED}@gw219)
+exten => _X.,n,Hangup()
+exten => _X.,n(send),Dial(SIP/219${EXTEN}@gw219)
+exten => _X.,n,Hangup()
+
+[gw219]
+exten => _X.,1,NoOp(Call in from SIP 219)
+exten => _X.,n,Dial(SIP/219)
+exten => _X.,n,Hangup()
+
+[220]
+exten => _X.,1,NoOp(Call from SIP 220)
+exten => _X.,n,GotoIf($["${EXTEN:0:1}" = "7" & ${LEN(${EXTEN})}=11]?change:send)
+exten => _X.,n(change),Set(CALLED=8${EXTEN:1})
+exten => _X.,n,Dial(SIP/220${CALLED}@gw220)
+exten => _X.,n,Hangup()
+exten => _X.,n(send),Dial(SIP/220${EXTEN}@gw220)
+exten => _X.,n,Hangup()
+
+[gw220]
+exten => _X.,1,NoOp(Call in from SIP 220)
+exten => _X.,n,Dial(SIP/220)
+exten => _X.,n,Hangup()
+
+[221]
+exten => _X.,1,NoOp(Call from SIP 221)
+exten => _X.,n,GotoIf($["${EXTEN:0:1}" = "7" & ${LEN(${EXTEN})}=11]?change:send)
+exten => _X.,n(change),Set(CALLED=8${EXTEN:1})
+exten => _X.,n,Dial(SIP/221${CALLED}@gw221)
+exten => _X.,n,Hangup()
+exten => _X.,n(send),Dial(SIP/221${EXTEN}@gw221)
+exten => _X.,n,Hangup()
+
+[gw221]
+exten => _X.,1,NoOp(Call in from SIP 221)
+exten => _X.,n,Dial(SIP/221)
+exten => _X.,n,Hangup()
+
+[222]
+exten => _X.,1,NoOp(Call from SIP 222)
+exten => _X.,n,GotoIf($["${EXTEN:0:1}" = "7" & ${LEN(${EXTEN})}=11]?change:send)
+exten => _X.,n(change),Set(CALLED=8${EXTEN:1})
+exten => _X.,n,Dial(SIP/222${CALLED}@gw222)
+exten => _X.,n,Hangup()
+exten => _X.,n(send),Dial(SIP/222${EXTEN}@gw222)
+exten => _X.,n,Hangup()
+
+[gw222]
+exten => _X.,1,NoOp(Call in from SIP 222)
+exten => _X.,n,Dial(SIP/222)
+exten => _X.,n,Hangup()
+
+[223]
+exten => _X.,1,NoOp(Call from SIP 223)
+exten => _X.,n,GotoIf($["${EXTEN:0:1}" = "7" & ${LEN(${EXTEN})}=11]?change:send)
+exten => _X.,n(change),Set(CALLED=8${EXTEN:1})
+exten => _X.,n,Dial(SIP/223${CALLED}@gw223)
+exten => _X.,n,Hangup()
+exten => _X.,n(send),Dial(SIP/223${EXTEN}@gw223)
+exten => _X.,n,Hangup()
+
+[gw223]
+exten => _X.,1,NoOp(Call in from SIP 223)
+exten => _X.,n,Dial(SIP/223)
+exten => _X.,n,Hangup()
+
+[224]
+exten => _X.,1,NoOp(Call from SIP 224)
+exten => _X.,n,GotoIf($["${EXTEN:0:1}" = "7" & ${LEN(${EXTEN})}=11]?change:send)
+exten => _X.,n(change),Set(CALLED=8${EXTEN:1})
+exten => _X.,n,Dial(SIP/224${CALLED}@gw224)
+exten => _X.,n,Hangup()
+exten => _X.,n(send),Dial(SIP/224${EXTEN}@gw224)
+exten => _X.,n,Hangup()
+
+[gw224]
+exten => _X.,1,NoOp(Call in from SIP 224)
+exten => _X.,n,Dial(SIP/224)
+exten => _X.,n,Hangup()
+
+[225]
+exten => _X.,1,NoOp(Call from SIP 225)
+exten => _X.,n,GotoIf($["${EXTEN:0:1}" = "7" & ${LEN(${EXTEN})}=11]?change:send)
+exten => _X.,n(change),Set(CALLED=8${EXTEN:1})
+exten => _X.,n,Dial(SIP/225${CALLED}@gw225)
+exten => _X.,n,Hangup()
+exten => _X.,n(send),Dial(SIP/225${EXTEN}@gw225)
+exten => _X.,n,Hangup()
+
+[gw225]
+exten => _X.,1,NoOp(Call in from SIP 225)
+exten => _X.,n,Dial(SIP/225)
+exten => _X.,n,Hangup()
+
+[226]
+exten => _X.,1,NoOp(Call from SIP 226)
+exten => _X.,n,GotoIf($["${EXTEN:0:1}" = "7" & ${LEN(${EXTEN})}=11]?change:send)
+exten => _X.,n(change),Set(CALLED=8${EXTEN:1})
+exten => _X.,n,Dial(SIP/226${CALLED}@gw226)
+exten => _X.,n,Hangup()
+exten => _X.,n(send),Dial(SIP/226${EXTEN}@gw226)
+exten => _X.,n,Hangup()
+
+[gw226]
+exten => _X.,1,NoOp(Call in from SIP 226)
+exten => _X.,n,Dial(SIP/226)
+exten => _X.,n,Hangup()
+
+[227]
+exten => _X.,1,NoOp(Call from SIP 227)
+exten => _X.,n,GotoIf($["${EXTEN:0:1}" = "7" & ${LEN(${EXTEN})}=11]?change:send)
+exten => _X.,n(change),Set(CALLED=8${EXTEN:1})
+exten => _X.,n,Dial(SIP/227${CALLED}@gw227)
+exten => _X.,n,Hangup()
+exten => _X.,n(send),Dial(SIP/227${EXTEN}@gw227)
+exten => _X.,n,Hangup()
+
+[gw227]
+exten => _X.,1,NoOp(Call in from SIP 227)
+exten => _X.,n,Dial(SIP/227)
+exten => _X.,n,Hangup()
+
+[228]
+exten => _X.,1,NoOp(Call from SIP 228)
+exten => _X.,n,GotoIf($["${EXTEN:0:1}" = "7" & ${LEN(${EXTEN})}=11]?change:send)
+exten => _X.,n(change),Set(CALLED=8${EXTEN:1})
+exten => _X.,n,Dial(SIP/228${CALLED}@gw228)
+exten => _X.,n,Hangup()
+exten => _X.,n(send),Dial(SIP/228${EXTEN}@gw228)
+exten => _X.,n,Hangup()
+
+[gw228]
+exten => _X.,1,NoOp(Call in from SIP 228)
+exten => _X.,n,Dial(SIP/228)
+exten => _X.,n,Hangup()
+
+[229]
+exten => _X.,1,NoOp(Call from SIP 229)
+exten => _X.,n,GotoIf($["${EXTEN:0:1}" = "7" & ${LEN(${EXTEN})}=11]?change:send)
+exten => _X.,n(change),Set(CALLED=8${EXTEN:1})
+exten => _X.,n,Dial(SIP/229${CALLED}@gw229)
+exten => _X.,n,Hangup()
+exten => _X.,n(send),Dial(SIP/229${EXTEN}@gw229)
+exten => _X.,n,Hangup()
+
+[gw229]
+exten => _X.,1,NoOp(Call in from SIP 229)
+exten => _X.,n,Dial(SIP/229)
+exten => _X.,n,Hangup()
+
+[230]
+exten => _X.,1,NoOp(Call from SIP 230)
+exten => _X.,n,GotoIf($["${EXTEN:0:1}" = "7" & ${LEN(${EXTEN})}=11]?change:send)
+exten => _X.,n(change),Set(CALLED=8${EXTEN:1})
+exten => _X.,n,Dial(SIP/230${CALLED}@gw230)
+exten => _X.,n,Hangup()
+exten => _X.,n(send),Dial(SIP/230${EXTEN}@gw230)
+exten => _X.,n,Hangup()
+
+[gw230]
+exten => _X.,1,NoOp(Call in from SIP 230)
+exten => _X.,n,Dial(SIP/230)
+exten => _X.,n,Hangup()
+
+[231]
+exten => _X.,1,NoOp(Call from SIP 231)
+exten => _X.,n,GotoIf($["${EXTEN:0:1}" = "7" & ${LEN(${EXTEN})}=11]?change:send)
+exten => _X.,n(change),Set(CALLED=8${EXTEN:1})
+exten => _X.,n,Dial(SIP/231${CALLED}@gw231)
+exten => _X.,n,Hangup()
+exten => _X.,n(send),Dial(SIP/231${EXTEN}@gw231)
+exten => _X.,n,Hangup()
+
+[gw231]
+exten => _X.,1,NoOp(Call in from SIP 231)
+exten => _X.,n,Dial(SIP/231)
+exten => _X.,n,Hangup()
+
+[232]
+exten => _X.,1,NoOp(Call from SIP 232)
+exten => _X.,n,GotoIf($["${EXTEN:0:1}" = "7" & ${LEN(${EXTEN})}=11]?change:send)
+exten => _X.,n(change),Set(CALLED=8${EXTEN:1})
+exten => _X.,n,Dial(SIP/232${CALLED}@gw232)
+exten => _X.,n,Hangup()
+exten => _X.,n(send),Dial(SIP/232${EXTEN}@gw232)
+exten => _X.,n,Hangup()
+
+[gw232]
+exten => _X.,1,NoOp(Call in from SIP 232)
+exten => _X.,n,Dial(SIP/232)
+exten => _X.,n,Hangup()
+
+[301]
+exten => _X.,1,NoOp(Call from SIP 301)
+exten => _X.,n,GotoIf($["${EXTEN:0:1}" = "7" & ${LEN(${EXTEN})}=11]?change:send)
+exten => _X.,n(change),Set(CALLED=8${EXTEN:1})
+exten => _X.,n,Dial(SIP/301${CALLED}@gw301)
+exten => _X.,n,Hangup()
+exten => _X.,n(send),Dial(SIP/301${EXTEN}@gw301)
+exten => _X.,n,Hangup()
+
+[gw301]
+exten => _X.,1,NoOp(Call in from SIP 301)
+exten => _X.,n,Dial(SIP/301)
+exten => _X.,n,Hangup()
+
+[302]
+exten => _X.,1,NoOp(Call from SIP 302)
+exten => _X.,n,GotoIf($["${EXTEN:0:1}" = "7" & ${LEN(${EXTEN})}=11]?change:send)
+exten => _X.,n(change),Set(CALLED=8${EXTEN:1})
+exten => _X.,n,Dial(SIP/302${CALLED}@gw302)
+exten => _X.,n,Hangup()
+exten => _X.,n(send),Dial(SIP/302${EXTEN}@gw302)
+exten => _X.,n,Hangup()
+
+[gw302]
+exten => _X.,1,NoOp(Call in from SIP 302)
+exten => _X.,n,Dial(SIP/302)
+exten => _X.,n,Hangup()
+
+[303]
+exten => _X.,1,NoOp(Call from SIP 303)
+exten => _X.,n,GotoIf($["${EXTEN:0:1}" = "7" & ${LEN(${EXTEN})}=11]?change:send)
+exten => _X.,n(change),Set(CALLED=8${EXTEN:1})
+exten => _X.,n,Dial(SIP/303${CALLED}@gw303)
+exten => _X.,n,Hangup()
+exten => _X.,n(send),Dial(SIP/303${EXTEN}@gw303)
+exten => _X.,n,Hangup()
+
+[gw303]
+exten => _X.,1,NoOp(Call in from SIP 303)
+exten => _X.,n,Dial(SIP/303)
+exten => _X.,n,Hangup()
+
+[304]
+exten => _X.,1,NoOp(Call from SIP 304)
+exten => _X.,n,GotoIf($["${EXTEN:0:1}" = "7" & ${LEN(${EXTEN})}=11]?change:send)
+exten => _X.,n(change),Set(CALLED=8${EXTEN:1})
+exten => _X.,n,Dial(SIP/304${CALLED}@gw304)
+exten => _X.,n,Hangup()
+exten => _X.,n(send),Dial(SIP/304${EXTEN}@gw304)
+exten => _X.,n,Hangup()
+
+[gw304]
+exten => _X.,1,NoOp(Call in from SIP 304)
+exten => _X.,n,Dial(SIP/304)
+exten => _X.,n,Hangup()
+
+[305]
+exten => _X.,1,NoOp(Call from SIP 305)
+exten => _X.,n,GotoIf($["${EXTEN:0:1}" = "7" & ${LEN(${EXTEN})}=11]?change:send)
+exten => _X.,n(change),Set(CALLED=8${EXTEN:1})
+exten => _X.,n,Dial(SIP/305${CALLED}@gw305)
+exten => _X.,n,Hangup()
+exten => _X.,n(send),Dial(SIP/305${EXTEN}@gw305)
+exten => _X.,n,Hangup()
+
+[gw305]
+exten => _X.,1,NoOp(Call in from SIP 305)
+exten => _X.,n,Dial(SIP/305)
+exten => _X.,n,Hangup()
+
+[306]
+exten => _X.,1,NoOp(Call from SIP 306)
+exten => _X.,n,GotoIf($["${EXTEN:0:1}" = "7" & ${LEN(${EXTEN})}=11]?change:send)
+exten => _X.,n(change),Set(CALLED=8${EXTEN:1})
+exten => _X.,n,Dial(SIP/306${CALLED}@gw306)
+exten => _X.,n,Hangup()
+exten => _X.,n(send),Dial(SIP/306${EXTEN}@gw306)
+exten => _X.,n,Hangup()
+
+[gw306]
+exten => _X.,1,NoOp(Call in from SIP 306)
+exten => _X.,n,Dial(SIP/306)
+exten => _X.,n,Hangup()
+
+[307]
+exten => _X.,1,NoOp(Call from SIP 307)
+exten => _X.,n,GotoIf($["${EXTEN:0:1}" = "7" & ${LEN(${EXTEN})}=11]?change:send)
+exten => _X.,n(change),Set(CALLED=8${EXTEN:1})
+exten => _X.,n,Dial(SIP/307${CALLED}@gw307)
+exten => _X.,n,Hangup()
+exten => _X.,n(send),Dial(SIP/307${EXTEN}@gw307)
+exten => _X.,n,Hangup()
+
+[gw307]
+exten => _X.,1,NoOp(Call in from SIP 307)
+exten => _X.,n,Dial(SIP/307)
+exten => _X.,n,Hangup()
+
+[308]
+exten => _X.,1,NoOp(Call from SIP 308)
+exten => _X.,n,GotoIf($["${EXTEN:0:1}" = "7" & ${LEN(${EXTEN})}=11]?change:send)
+exten => _X.,n(change),Set(CALLED=8${EXTEN:1})
+exten => _X.,n,Dial(SIP/308${CALLED}@gw308)
+exten => _X.,n,Hangup()
+exten => _X.,n(send),Dial(SIP/308${EXTEN}@gw308)
+exten => _X.,n,Hangup()
+
+[gw308]
+exten => _X.,1,NoOp(Call in from SIP 308)
+exten => _X.,n,Dial(SIP/308)
+exten => _X.,n,Hangup()
+
+[309]
+exten => _X.,1,NoOp(Call from SIP 309)
+exten => _X.,n,GotoIf($["${EXTEN:0:1}" = "7" & ${LEN(${EXTEN})}=11]?change:send)
+exten => _X.,n(change),Set(CALLED=8${EXTEN:1})
+exten => _X.,n,Dial(SIP/309${CALLED}@gw309)
+exten => _X.,n,Hangup()
+exten => _X.,n(send),Dial(SIP/309${EXTEN}@gw309)
+exten => _X.,n,Hangup()
+
+[gw309]
+exten => _X.,1,NoOp(Call in from SIP 309)
+exten => _X.,n,Dial(SIP/309)
+exten => _X.,n,Hangup()
+
+[310]
+exten => _X.,1,NoOp(Call from SIP 310)
+exten => _X.,n,GotoIf($["${EXTEN:0:1}" = "7" & ${LEN(${EXTEN})}=11]?change:send)
+exten => _X.,n(change),Set(CALLED=8${EXTEN:1})
+exten => _X.,n,Dial(SIP/310${CALLED}@gw310)
+exten => _X.,n,Hangup()
+exten => _X.,n(send),Dial(SIP/310${EXTEN}@gw310)
+exten => _X.,n,Hangup()
+
+[gw310]
+exten => _X.,1,NoOp(Call in from SIP 310)
+exten => _X.,n,Dial(SIP/310)
+exten => _X.,n,Hangup()
+
+[311]
+exten => _X.,1,NoOp(Call from SIP 311)
+exten => _X.,n,GotoIf($["${EXTEN:0:1}" = "7" & ${LEN(${EXTEN})}=11]?change:send)
+exten => _X.,n(change),Set(CALLED=8${EXTEN:1})
+exten => _X.,n,Dial(SIP/311${CALLED}@gw311)
+exten => _X.,n,Hangup()
+exten => _X.,n(send),Dial(SIP/311${EXTEN}@gw311)
+exten => _X.,n,Hangup()
+
+[gw311]
+exten => _X.,1,NoOp(Call in from SIP 311)
+exten => _X.,n,Dial(SIP/311)
+exten => _X.,n,Hangup()
+
+[312]
+exten => _X.,1,NoOp(Call from SIP 312)
+exten => _X.,n,GotoIf($["${EXTEN:0:1}" = "7" & ${LEN(${EXTEN})}=11]?change:send)
+exten => _X.,n(change),Set(CALLED=8${EXTEN:1})
+exten => _X.,n,Dial(SIP/312${CALLED}@gw312)
+exten => _X.,n,Hangup()
+exten => _X.,n(send),Dial(SIP/312${EXTEN}@gw312)
+exten => _X.,n,Hangup()
+
+[gw312]
+exten => _X.,1,NoOp(Call in from SIP 312)
+exten => _X.,n,Dial(SIP/312)
+exten => _X.,n,Hangup()
+
+[313]
+exten => _X.,1,NoOp(Call from SIP 313)
+exten => _X.,n,GotoIf($["${EXTEN:0:1}" = "7" & ${LEN(${EXTEN})}=11]?change:send)
+exten => _X.,n(change),Set(CALLED=8${EXTEN:1})
+exten => _X.,n,Dial(SIP/313${CALLED}@gw313)
+exten => _X.,n,Hangup()
+exten => _X.,n(send),Dial(SIP/313${EXTEN}@gw313)
+exten => _X.,n,Hangup()
+
+[gw313]
+exten => _X.,1,NoOp(Call in from SIP 313)
+exten => _X.,n,Dial(SIP/313)
+exten => _X.,n,Hangup()
+
+[314]
+exten => _X.,1,NoOp(Call from SIP 314)
+exten => _X.,n,GotoIf($["${EXTEN:0:1}" = "7" & ${LEN(${EXTEN})}=11]?change:send)
+exten => _X.,n(change),Set(CALLED=8${EXTEN:1})
+exten => _X.,n,Dial(SIP/314${CALLED}@gw314)
+exten => _X.,n,Hangup()
+exten => _X.,n(send),Dial(SIP/314${EXTEN}@gw314)
+exten => _X.,n,Hangup()
+
+[gw314]
+exten => _X.,1,NoOp(Call in from SIP 314)
+exten => _X.,n,Dial(SIP/314)
+exten => _X.,n,Hangup()
+
+[315]
+exten => _X.,1,NoOp(Call from SIP 315)
+exten => _X.,n,GotoIf($["${EXTEN:0:1}" = "7" & ${LEN(${EXTEN})}=11]?change:send)
+exten => _X.,n(change),Set(CALLED=8${EXTEN:1})
+exten => _X.,n,Dial(SIP/315${CALLED}@gw315)
+exten => _X.,n,Hangup()
+exten => _X.,n(send),Dial(SIP/315${EXTEN}@gw315)
+exten => _X.,n,Hangup()
+
+[gw315]
+exten => _X.,1,NoOp(Call in from SIP 315)
+exten => _X.,n,Dial(SIP/315)
+exten => _X.,n,Hangup()
+
+[316]
+exten => _X.,1,NoOp(Call from SIP 316)
+exten => _X.,n,GotoIf($["${EXTEN:0:1}" = "7" & ${LEN(${EXTEN})}=11]?change:send)
+exten => _X.,n(change),Set(CALLED=8${EXTEN:1})
+exten => _X.,n,Dial(SIP/316${CALLED}@gw316)
+exten => _X.,n,Hangup()
+exten => _X.,n(send),Dial(SIP/316${EXTEN}@gw316)
+exten => _X.,n,Hangup()
+
+[gw316]
+exten => _X.,1,NoOp(Call in from SIP 316)
+exten => _X.,n,Dial(SIP/316)
+exten => _X.,n,Hangup()
+
+[317]
+exten => _X.,1,NoOp(Call from SIP 317)
+exten => _X.,n,GotoIf($["${EXTEN:0:1}" = "7" & ${LEN(${EXTEN})}=11]?change:send)
+exten => _X.,n(change),Set(CALLED=8${EXTEN:1})
+exten => _X.,n,Dial(SIP/317${CALLED}@gw317)
+exten => _X.,n,Hangup()
+exten => _X.,n(send),Dial(SIP/317${EXTEN}@gw317)
+exten => _X.,n,Hangup()
+
+[gw317]
+exten => _X.,1,NoOp(Call in from SIP 317)
+exten => _X.,n,Dial(SIP/317)
+exten => _X.,n,Hangup()
+
+[318]
+exten => _X.,1,NoOp(Call from SIP 318)
+exten => _X.,n,GotoIf($["${EXTEN:0:1}" = "7" & ${LEN(${EXTEN})}=11]?change:send)
+exten => _X.,n(change),Set(CALLED=8${EXTEN:1})
+exten => _X.,n,Dial(SIP/318${CALLED}@gw318)
+exten => _X.,n,Hangup()
+exten => _X.,n(send),Dial(SIP/318${EXTEN}@gw318)
+exten => _X.,n,Hangup()
+
+[gw318]
+exten => _X.,1,NoOp(Call in from SIP 318)
+exten => _X.,n,Dial(SIP/318)
+exten => _X.,n,Hangup()
+
+[319]
+exten => _X.,1,NoOp(Call from SIP 319)
+exten => _X.,n,GotoIf($["${EXTEN:0:1}" = "7" & ${LEN(${EXTEN})}=11]?change:send)
+exten => _X.,n(change),Set(CALLED=8${EXTEN:1})
+exten => _X.,n,Dial(SIP/319${CALLED}@gw319)
+exten => _X.,n,Hangup()
+exten => _X.,n(send),Dial(SIP/319${EXTEN}@gw319)
+exten => _X.,n,Hangup()
+
+[gw319]
+exten => _X.,1,NoOp(Call in from SIP 319)
+exten => _X.,n,Dial(SIP/319)
+exten => _X.,n,Hangup()
+
+[320]
+exten => _X.,1,NoOp(Call from SIP 320)
+exten => _X.,n,GotoIf($["${EXTEN:0:1}" = "7" & ${LEN(${EXTEN})}=11]?change:send)
+exten => _X.,n(change),Set(CALLED=8${EXTEN:1})
+exten => _X.,n,Dial(SIP/320${CALLED}@gw320)
+exten => _X.,n,Hangup()
+exten => _X.,n(send),Dial(SIP/320${EXTEN}@gw320)
+exten => _X.,n,Hangup()
+
+[gw320]
+exten => _X.,1,NoOp(Call in from SIP 320)
+exten => _X.,n,Dial(SIP/320)
+exten => _X.,n,Hangup()
+
+[321]
+exten => _X.,1,NoOp(Call from SIP 321)
+exten => _X.,n,GotoIf($["${EXTEN:0:1}" = "7" & ${LEN(${EXTEN})}=11]?change:send)
+exten => _X.,n(change),Set(CALLED=8${EXTEN:1})
+exten => _X.,n,Dial(SIP/321${CALLED}@gw321)
+exten => _X.,n,Hangup()
+exten => _X.,n(send),Dial(SIP/321${EXTEN}@gw321)
+exten => _X.,n,Hangup()
+
+[gw321]
+exten => _X.,1,NoOp(Call in from SIP 321)
+exten => _X.,n,Dial(SIP/321)
+exten => _X.,n,Hangup()
+
+[322]
+exten => _X.,1,NoOp(Call from SIP 322)
+exten => _X.,n,GotoIf($["${EXTEN:0:1}" = "7" & ${LEN(${EXTEN})}=11]?change:send)
+exten => _X.,n(change),Set(CALLED=8${EXTEN:1})
+exten => _X.,n,Dial(SIP/322${CALLED}@gw322)
+exten => _X.,n,Hangup()
+exten => _X.,n(send),Dial(SIP/322${EXTEN}@gw322)
+exten => _X.,n,Hangup()
+
+[gw322]
+exten => _X.,1,NoOp(Call in from SIP 322)
+exten => _X.,n,Dial(SIP/322)
+exten => _X.,n,Hangup()
+
+[323]
+exten => _X.,1,NoOp(Call from SIP 323)
+exten => _X.,n,GotoIf($["${EXTEN:0:1}" = "7" & ${LEN(${EXTEN})}=11]?change:send)
+exten => _X.,n(change),Set(CALLED=8${EXTEN:1})
+exten => _X.,n,Dial(SIP/323${CALLED}@gw323)
+exten => _X.,n,Hangup()
+exten => _X.,n(send),Dial(SIP/323${EXTEN}@gw323)
+exten => _X.,n,Hangup()
+
+[gw323]
+exten => _X.,1,NoOp(Call in from SIP 323)
+exten => _X.,n,Dial(SIP/323)
+exten => _X.,n,Hangup()
+
+[324]
+exten => _X.,1,NoOp(Call from SIP 324)
+exten => _X.,n,GotoIf($["${EXTEN:0:1}" = "7" & ${LEN(${EXTEN})}=11]?change:send)
+exten => _X.,n(change),Set(CALLED=8${EXTEN:1})
+exten => _X.,n,Dial(SIP/324${CALLED}@gw324)
+exten => _X.,n,Hangup()
+exten => _X.,n(send),Dial(SIP/324${EXTEN}@gw324)
+exten => _X.,n,Hangup()
+
+[gw324]
+exten => _X.,1,NoOp(Call in from SIP 324)
+exten => _X.,n,Dial(SIP/324)
+exten => _X.,n,Hangup()
+
+[325]
+exten => _X.,1,NoOp(Call from SIP 325)
+exten => _X.,n,GotoIf($["${EXTEN:0:1}" = "7" & ${LEN(${EXTEN})}=11]?change:send)
+exten => _X.,n(change),Set(CALLED=8${EXTEN:1})
+exten => _X.,n,Dial(SIP/325${CALLED}@gw325)
+exten => _X.,n,Hangup()
+exten => _X.,n(send),Dial(SIP/325${EXTEN}@gw325)
+exten => _X.,n,Hangup()
+
+[gw325]
+exten => _X.,1,NoOp(Call in from SIP 325)
+exten => _X.,n,Dial(SIP/325)
+exten => _X.,n,Hangup()
+
+[326]
+exten => _X.,1,NoOp(Call from SIP 326)
+exten => _X.,n,GotoIf($["${EXTEN:0:1}" = "7" & ${LEN(${EXTEN})}=11]?change:send)
+exten => _X.,n(change),Set(CALLED=8${EXTEN:1})
+exten => _X.,n,Dial(SIP/326${CALLED}@gw326)
+exten => _X.,n,Hangup()
+exten => _X.,n(send),Dial(SIP/326${EXTEN}@gw326)
+exten => _X.,n,Hangup()
+
+[gw326]
+exten => _X.,1,NoOp(Call in from SIP 326)
+exten => _X.,n,Dial(SIP/326)
+exten => _X.,n,Hangup()
+
+[327]
+exten => _X.,1,NoOp(Call from SIP 327)
+exten => _X.,n,GotoIf($["${EXTEN:0:1}" = "7" & ${LEN(${EXTEN})}=11]?change:send)
+exten => _X.,n(change),Set(CALLED=8${EXTEN:1})
+exten => _X.,n,Dial(SIP/327${CALLED}@gw327)
+exten => _X.,n,Hangup()
+exten => _X.,n(send),Dial(SIP/327${EXTEN}@gw327)
+exten => _X.,n,Hangup()
+
+[gw327]
+exten => _X.,1,NoOp(Call in from SIP 327)
+exten => _X.,n,Dial(SIP/327)
+exten => _X.,n,Hangup()
+
+[328]
+exten => _X.,1,NoOp(Call from SIP 328)
+exten => _X.,n,GotoIf($["${EXTEN:0:1}" = "7" & ${LEN(${EXTEN})}=11]?change:send)
+exten => _X.,n(change),Set(CALLED=8${EXTEN:1})
+exten => _X.,n,Dial(SIP/328${CALLED}@gw328)
+exten => _X.,n,Hangup()
+exten => _X.,n(send),Dial(SIP/328${EXTEN}@gw328)
+exten => _X.,n,Hangup()
+
+[gw328]
+exten => _X.,1,NoOp(Call in from SIP 328)
+exten => _X.,n,Dial(SIP/328)
+exten => _X.,n,Hangup()
+
+[329]
+exten => _X.,1,NoOp(Call from SIP 329)
+exten => _X.,n,GotoIf($["${EXTEN:0:1}" = "7" & ${LEN(${EXTEN})}=11]?change:send)
+exten => _X.,n(change),Set(CALLED=8${EXTEN:1})
+exten => _X.,n,Dial(SIP/329${CALLED}@gw329)
+exten => _X.,n,Hangup()
+exten => _X.,n(send),Dial(SIP/329${EXTEN}@gw329)
+exten => _X.,n,Hangup()
+
+[gw329]
+exten => _X.,1,NoOp(Call in from SIP 329)
+exten => _X.,n,Dial(SIP/329)
+exten => _X.,n,Hangup()
+
+[330]
+exten => _X.,1,NoOp(Call from SIP 330)
+exten => _X.,n,GotoIf($["${EXTEN:0:1}" = "7" & ${LEN(${EXTEN})}=11]?change:send)
+exten => _X.,n(change),Set(CALLED=8${EXTEN:1})
+exten => _X.,n,Dial(SIP/330${CALLED}@gw330)
+exten => _X.,n,Hangup()
+exten => _X.,n(send),Dial(SIP/330${EXTEN}@gw330)
+exten => _X.,n,Hangup()
+
+[gw330]
+exten => _X.,1,NoOp(Call in from SIP 330)
+exten => _X.,n,Dial(SIP/330)
+exten => _X.,n,Hangup()
+
+[331]
+exten => _X.,1,NoOp(Call from SIP 331)
+exten => _X.,n,GotoIf($["${EXTEN:0:1}" = "7" & ${LEN(${EXTEN})}=11]?change:send)
+exten => _X.,n(change),Set(CALLED=8${EXTEN:1})
+exten => _X.,n,Dial(SIP/331${CALLED}@gw331)
+exten => _X.,n,Hangup()
+exten => _X.,n(send),Dial(SIP/331${EXTEN}@gw331)
+exten => _X.,n,Hangup()
+
+[gw331]
+exten => _X.,1,NoOp(Call in from SIP 331)
+exten => _X.,n,Dial(SIP/331)
+exten => _X.,n,Hangup()
+
+[332]
+exten => _X.,1,NoOp(Call from SIP 332)
+exten => _X.,n,GotoIf($["${EXTEN:0:1}" = "7" & ${LEN(${EXTEN})}=11]?change:send)
+exten => _X.,n(change),Set(CALLED=8${EXTEN:1})
+exten => _X.,n,Dial(SIP/332${CALLED}@gw332)
+exten => _X.,n,Hangup()
+exten => _X.,n(send),Dial(SIP/332${EXTEN}@gw332)
+exten => _X.,n,Hangup()
+
+[gw332]
+exten => _X.,1,NoOp(Call in from SIP 332)
+exten => _X.,n,Dial(SIP/332)
+exten => _X.,n,Hangup()
