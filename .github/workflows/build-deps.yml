@@ -1,0 +1,219 @@
+name: Build dependency archives
+
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  # ── Debian / Ubuntu ────────────────────────────────────────────────────────
+  deb:
+    name: deps-${{ matrix.name }}
+    runs-on: ubuntu-latest
+    container: ${{ matrix.image }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - image: debian:11
+            name: debian11
+          - image: debian:12
+            name: debian12
+          - image: ubuntu:20.04
+            name: ubuntu2004
+          - image: ubuntu:22.04
+            name: ubuntu2204
+          - image: ubuntu:24.04
+            name: ubuntu2404
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download .deb packages + Asterisk source
+        env:
+          DEBIAN_FRONTEND: noninteractive
+        run: |
+          apt-get update -qq
+          mkdir -p pkgs
+
+          # download all deps with their transitive dependencies
+          apt-get install -y --download-only -o Dir::Cache::archives="$(pwd)/pkgs" \
+            build-essential wget curl pkg-config \
+            libssl-dev libncurses5-dev libedit-dev \
+            uuid-dev libxml2-dev libsqlite3-dev \
+            libjansson-dev libsrtp2-dev \
+            libnewt-dev libcurl4-openssl-dev \
+            liblua5.2-dev \
+            default-libmysqlclient-dev default-mysql-client \
+            libpopt-dev libical-dev \
+            libreadline-dev bison flex autoconf automake libtool \
+            2>/dev/null || true
+
+          # try spandsp (not available on all versions)
+          apt-get install -y --download-only -o Dir::Cache::archives="$(pwd)/pkgs" \
+            libspandsp-dev 2>/dev/null || true
+
+          # download Asterisk source
+          wget -q https://downloads.asterisk.org/pub/telephony/asterisk/asterisk-20.19.0.tar.gz
+
+          # copy project files
+          cp sql/schema.sql .
+          cp scripts/generate-configs.sh .
+          cp scripts/install-all.sh install.sh
+          cp sip.conf .
+
+          # create archive
+          tar czf deps-${{ matrix.name }}.tar.gz \
+            pkgs/ \
+            asterisk-20.19.0.tar.gz \
+            schema.sql \
+            generate-configs.sh \
+            install.sh \
+            sip.conf
+
+          echo "Archive size: $(du -sh deps-${{ matrix.name }}.tar.gz | cut -f1)"
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: deps-${{ matrix.name }}
+          path: deps-${{ matrix.name }}.tar.gz
+          retention-days: 7
+
+  # ── AlmaLinux / Rocky / CentOS ────────────────────────────────────────────
+  rpm:
+    name: deps-${{ matrix.name }}
+    runs-on: ubuntu-latest
+    container: ${{ matrix.image }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - image: almalinux:8
+            name: almalinux8
+          - image: almalinux:9
+            name: almalinux9
+          - image: rockylinux:8
+            name: rocky8
+          - image: rockylinux:9
+            name: rocky9
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download .rpm packages + Asterisk source
+        run: |
+          dnf install -y epel-release 2>/dev/null || true
+          dnf install -y 'dnf-command(download)' 2>/dev/null || true
+          mkdir -p pkgs
+
+          dnf download --resolve --destdir=pkgs \
+            gcc gcc-c++ make wget curl pkgconfig \
+            openssl-devel ncurses-devel libedit-devel \
+            libuuid-devel libxml2-devel sqlite-devel \
+            jansson-devel \
+            newt-devel libcurl-devel \
+            lua-devel \
+            mariadb-devel mariadb \
+            popt-devel libical-devel \
+            readline-devel bison flex autoconf automake libtool \
+            2>/dev/null || true
+
+          # libsrtp and spandsp from epel
+          dnf download --resolve --destdir=pkgs \
+            libsrtp-devel spandsp-devel 2>/dev/null || true
+
+          # download Asterisk source
+          wget -q https://downloads.asterisk.org/pub/telephony/asterisk/asterisk-20.19.0.tar.gz
+
+          cp sql/schema.sql .
+          cp scripts/generate-configs.sh .
+          cp scripts/install-all.sh install.sh
+          cp sip.conf .
+
+          tar czf deps-${{ matrix.name }}.tar.gz \
+            pkgs/ \
+            asterisk-20.19.0.tar.gz \
+            schema.sql \
+            generate-configs.sh \
+            install.sh \
+            sip.conf
+
+          echo "Archive size: $(du -sh deps-${{ matrix.name }}.tar.gz | cut -f1)"
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: deps-${{ matrix.name }}
+          path: deps-${{ matrix.name }}.tar.gz
+          retention-days: 7
+
+  # ── Create GitHub Release ─────────────────────────────────────────────────
+  release:
+    name: Create Release
+    needs: [deb, rpm]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          path: artifacts/
+          merge-multiple: true
+
+      - name: List archives
+        run: ls -lh artifacts/
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.ref_name || 'latest' }}
+          name: "Asterisk 20.19.0 — dependency archives"
+          body: |
+            ## Offline install archives
+
+            Each archive contains:
+            - All build dependencies (`.deb` / `.rpm`) with transitive deps
+            - `asterisk-20.19.0.tar.gz` source
+            - `install.sh` — full install script
+            - `sip.conf`, `schema.sql`, `generate-configs.sh`
+
+            ### Usage on a clean server
+
+            ```bash
+            # 1. copy the right archive for your OS to the server
+            scp deps-debian12.tar.gz root@your-server:/opt/
+
+            # 2. on the server
+            mkdir /opt/ast && tar xf /opt/deps-debian12.tar.gz -C /opt/ast
+            cd /opt/ast
+
+            # 3. install packages offline
+            dpkg -i pkgs/*.deb          # Debian/Ubuntu
+            # or
+            rpm -Uvh pkgs/*.rpm         # AlmaLinux/Rocky
+
+            # 4. build & install Asterisk
+            bash install.sh
+
+            # 5. set MySQL credentials
+            nano /etc/asterisk/asterisk-db.env
+            systemctl start asterisk
+            ```
+
+            | Archive | OS |
+            |---|---|
+            | `deps-debian11.tar.gz` | Debian 11 |
+            | `deps-debian12.tar.gz` | Debian 12 |
+            | `deps-ubuntu2004.tar.gz` | Ubuntu 20.04 |
+            | `deps-ubuntu2204.tar.gz` | Ubuntu 22.04 |
+            | `deps-ubuntu2404.tar.gz` | Ubuntu 24.04 |
+            | `deps-almalinux8.tar.gz` | AlmaLinux 8 |
+            | `deps-almalinux9.tar.gz` | AlmaLinux 9 |
+            | `deps-rocky8.tar.gz` | Rocky Linux 8 |
+            | `deps-rocky9.tar.gz` | Rocky Linux 9 |
+          files: artifacts/*.tar.gz
+          draft: false
+          prerelease: false
