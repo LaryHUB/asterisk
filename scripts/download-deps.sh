@@ -106,18 +106,38 @@ info "Extracting to $DEST ..."
 tar xf "$DEST/$ARCHIVE" -C "$DEST"
 rm -f "$DEST/$ARCHIVE"
 
-# ── print next steps ─────────────────────────────────────────────────────────
+cd "$DEST"
+
+# ── install packages ─────────────────────────────────────────────────────────
+info "Installing packages..."
+case "$OS_ID" in
+  debian|ubuntu)
+    dpkg -i pkgs/*.deb 2>/dev/null || true
+    # fix broken deps that dpkg couldn't resolve
+    apt-get install -f -y 2>/dev/null || true
+    ;;
+  almalinux|alma|rocky|centos|rhel|ol)
+    rpm -Uvh --force pkgs/*.rpm 2>/dev/null || true
+    ;;
+esac
+info "Packages installed."
+
+# ── build & install Asterisk ─────────────────────────────────────────────────
+info "Running install.sh ..."
+bash install.sh
+
 echo ""
 echo "============================================="
-echo " Archive ready: $DEST"
+echo " Asterisk 20.19.0 installed successfully"
 echo "============================================="
 echo ""
-echo "Install packages and Asterisk:"
-echo ""
-echo "  cd $DEST"
-echo "  $PKG_CMD"
-echo "  bash install.sh"
-echo ""
-echo "Or run everything at once:"
-echo "  cd $DEST && $PKG_CMD ; bash install.sh"
+echo "Next steps:"
+echo "  1. Edit MySQL credentials:"
+echo "       nano /etc/asterisk/asterisk-db.env"
+echo "  2. Import DB schema:"
+echo "       mysql -u root -p < $DEST/schema.sql"
+echo "  3. Start Asterisk:"
+echo "       systemctl start asterisk"
+echo "  4. Check:"
+echo "       asterisk -r"
 echo ""
